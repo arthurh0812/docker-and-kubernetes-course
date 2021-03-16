@@ -1,0 +1,62 @@
+version: "3.8"
+services:
+  mongodb:
+    container_name: multi_container_mongodb_app
+    image: "mongo:latest"
+    volumes: 
+      # named volume
+      - multi-container-data:/data/db
+    env_file: 
+      - ./env/mongodb.env
+    networks:
+      - multi-container-net
+
+  backend:
+    container_name: multi_container_backend_app
+    build: 
+      context: ./backend
+      # dockerfile: ./backend/Dockerfile
+      # args:
+        # - some-arg=3
+    image: multi-container-backend
+    env_file: 
+      - ./env/backend.env
+    ports:
+      - "80:80"
+    networks: 
+      - multi-container-net
+    volumes:
+      # named volume
+      - multi-container-logs:/app/logs
+      # anonymous volume
+      - /app/node_modules
+      # bind mount
+      - ./backend:/app
+    depends_on:
+      - mongodb
+
+  frontend:
+    container_name: multi_container_frontend_app
+    build:
+      context: ./frontend
+      # dockerfile: ./frontend/Dockerfile
+    image: multi-container-frontend
+    env_file: 
+      - ./env/frontend.env
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend/src:/app/src
+    stdin_open: true
+    tty: true
+    depends_on: 
+      - backend
+
+volumes:
+  multi-container-data: {}
+  multi-container-logs: {}
+
+networks:
+  multi-container-net:
+    name: multi-container-net
+    driver: bridge

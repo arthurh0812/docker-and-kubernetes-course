@@ -1,0 +1,7 @@
+# don't apply hot reloading to the Dockerfile
+Dockerfile
+
+# never copy the node_modules
+node_modules
+
+.git

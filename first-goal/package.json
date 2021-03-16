@@ -1,0 +1,12 @@
+{
+    "type": "module",
+    "name": "first-goal",
+    "version": "1.0.0",
+    "description": "A project to demonstrate a simple Docker image",
+    "main": "server.js",
+    "author": "Arthur Hennig",
+    "dependencies": {
+        "express": "4.17.1",
+        "body-parser": "1.19.0"
+    }
+}

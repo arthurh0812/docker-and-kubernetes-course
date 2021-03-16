@@ -1,0 +1,9 @@
+# unnecessary to copy Dockerfiles
+Dockerfile
+
+# don't include git
+.git
+
+# never copy the node modules
+node_modules/
+

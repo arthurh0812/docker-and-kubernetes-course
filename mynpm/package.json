@@ -1,0 +1,17 @@
+{
+  "name": "mynpm",
+  "version": "1.0.0",
+  "description": "this package tests utility containers in Docker",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Arthur Hennig",
+  "license": "ISC"
+}
