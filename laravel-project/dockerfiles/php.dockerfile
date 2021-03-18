@@ -6,6 +6,5 @@ COPY src .
 
 RUN docker-php-ext-install pdo pdo_mysql
 
-RUN addgroup -g 1000 laravel && adduser -G laravel -g laravel -s /bin/bash -D laravel
-
-USER laravel
+# the www-data user is the default user created inside the php:7.4-fpm-alpine image
+RUN chown -R www-data:www-data /var/www/html
