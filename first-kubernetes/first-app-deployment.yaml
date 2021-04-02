@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: first-app
+spec:
+  selector:
+    matchLabels:
+      app: first-app-pod
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: first-app-pod
+    spec:
+      containers:
+        - name: hello
+          image: "gcr.io/tradaccs/first-kubernetes"

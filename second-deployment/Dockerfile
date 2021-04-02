@@ -12,6 +12,6 @@ RUN npm run build
 
 ENV PORT=8080
 
-EXPOSE 8080
+EXPOSE ${PORT}
 
 CMD [ "npm", "run", "start" ]
