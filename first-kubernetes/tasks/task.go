@@ -3,13 +3,14 @@ package tasks
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/go-playground/validator"
 	"log"
 	"net/http"
 )
 
 type Task struct {
-	Title string 		`json:"title"`
-	Description string 	`json:"description"`
+	Title string 		`json:"title" validate:"required,max=40"`
+	Description string 	`json:"description" validate:"max=200"`
 }
 
 type TaskCreator struct {
@@ -20,8 +21,13 @@ type TaskCreator struct {
 
 type TaskCreatorInput struct {
 	Data struct {
-		Task *Task `json:"task"`
-	} `json:"data"`
+		Task *Task `json:"task" validate:"required"`
+	} `json:"data" validate:"required"`
+}
+
+func (t *TaskCreatorInput) validate() error {
+	val := validator.New()
+	return val.Struct(t.Data)
 }
 
 type TaskCreatorOutput struct {
@@ -43,6 +49,12 @@ func NewTaskCreator(w http.ResponseWriter, req *http.Request) *TaskCreator {
 	}
 }
 
+func RenderJSON(w http.ResponseWriter, msg, status string) {
+	enc := json.NewEncoder(w)
+	output := NewTaskCreatorOutput(msg, status)
+	_ = enc.Encode(output)
+}
+
 func (t *TaskCreator) CreateTask() {
 	w, req := t.wtr, t.req
 	dec := json.NewDecoder(req.Body)
@@ -51,14 +63,16 @@ func (t *TaskCreator) CreateTask() {
 	if err != nil {
 		log.Fatalf("error decoding JSON: %v", err)
 	}
+	err = input.validate()
+	if err != nil {
+		RenderJSON(w, fmt.Sprintf("%s", err), "fail")
+	}
 	task := input.Data.Task
 	err = createTask(task)
-	enc := json.NewEncoder(w)
-	output := NewTaskCreatorOutput("successfully created new task record", "success")
 	if err != nil {
-		output = NewTaskCreatorOutput(fmt.Sprintf("%s", err), "fail")
+		RenderJSON(w, fmt.Sprintf("error while creating task: %s", err), "fail")
 	}
-	_ = enc.Encode(output) // discard error
+	RenderJSON(w, "successfully created new task record", "success")
 }
 
 func createTask(task *Task) error {
