@@ -1,0 +1,7 @@
+Dockerfile
+.dockerignore
+
+*.yaml
+
+vendor/
+node_modules/
