@@ -1,0 +1,1 @@
+module "kub-consumer"
