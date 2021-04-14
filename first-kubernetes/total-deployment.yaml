@@ -1,0 +1,45 @@
+# first-app service definition
+apiVersion: v1
+kind: Service
+metadata:
+  name: first-app
+  labels:
+    group: example
+spec:
+  type: LoadBalancer
+  selector:
+    app: first-app-pod
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+---
+# first-app deployment definition
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: first-app
+  labels:
+    group: example
+spec:
+  selector:
+    matchLabels:
+      app: first-app-pod
+      tier: test
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: first-app-pod
+        tier: test
+    spec:
+      containers:
+        - name: hello
+          image: "gcr.io/tradaccs/first-kubernetes:1"
+          imagePullPolicy: Always
+          livenessProbe:
+            periodSeconds: 10
+            httpGet:
+              port: 80
+              path: /
+              scheme: HTTP
