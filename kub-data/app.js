@@ -10,6 +10,12 @@ const filePath = path.join(__dirname, 'story', 'text.txt');
 
 app.use(bodyParser.json());
 
+app.get("/", (req, res) => {
+  res.status(200).json({
+    message: "This worked! Two pods are now communicating with each other"
+  })
+})
+
 app.get('/story', (req, res) => {
   fs.readFile(filePath, (err, data) => {
     if (err) {
@@ -31,5 +37,14 @@ app.post('/story', (req, res) => {
     res.status(201).json({ message: 'Text was stored!' });
   });
 });
+
+app.get("/error", (req, res) => {
+  process.exit(1)
+})
+
+console.log("This is a sample application and it is amazing to use Kubernetes!")
+
+console.log("With these log messages I am currently practicing typing and learning to type as fast and " +
+    "as accurate as possible.")
 
 app.listen(3000);
