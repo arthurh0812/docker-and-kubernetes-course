@@ -7,7 +7,7 @@ spec:
   selector:
     matchLabels:
       app: story-app
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       labels:
@@ -15,9 +15,23 @@ spec:
     spec:
       containers:
         - name: story
-          image: gcr.io/tradaccs/kub-data:4
+          image: gcr.io/tradaccs/kub-data:v5
+          env:
+            - name: STORY_DIR
+              value: 'story'
           ports:
             - containerPort: 3000
-          resources:
-            requests:
-              cpu: 200m
+#          resources:
+#            requests:
+#              cpu: 200m
+          volumeMounts:
+            - mountPath: /app/story
+              name: story-volume
+      volumes:
+        - name: story-volume
+          persistentVolumeClaim:
+            claimName: story-volume-claim
+#          emptyDir: {}
+#          hostPath:
+#            path: /var/story
+#            type: DirectoryOrCreate
