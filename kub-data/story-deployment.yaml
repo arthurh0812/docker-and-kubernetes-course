@@ -18,6 +18,17 @@ spec:
       containers:
         - name: story
           image: gcr.io/tradaccs/kub-data:v5
+
+#          more complex configuration, but might be necessary if you don't want
+#          to apply ALL key-value pairs from the config map
+#          env:
+#            - name: STORY_DIR
+#              valueFrom:
+#                configMapKeyRef:
+#                  name: story-config
+#                  key: STORY_DIR
+
+#          applies ALL key-value pairs from the config map
           envFrom:
             - configMapRef:
                 name: story-config
