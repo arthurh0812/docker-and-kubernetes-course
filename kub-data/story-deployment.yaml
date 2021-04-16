@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: story-deployment
   namespace: default
+  labels:
+    name: story-deployment
 spec:
   selector:
     matchLabels:
@@ -16,9 +18,9 @@ spec:
       containers:
         - name: story
           image: gcr.io/tradaccs/kub-data:v5
-          env:
-            - name: STORY_DIR
-              value: 'story'
+          envFrom:
+            - configMapRef:
+                name: story-config
           ports:
             - containerPort: 3000
 #          resources:

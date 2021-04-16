@@ -3,6 +3,8 @@ kind: Service
 metadata:
   name: story-service
   namespace: default
+  labels:
+    name: story-service
 spec:
   selector:
     app: story-app
