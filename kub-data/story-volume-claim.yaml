@@ -3,6 +3,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: story-volume-claim
   namespace: default
+  labels:
+    name: story-volume-claim
 spec:
   volumeName: story-volume
   volumeMode: Filesystem
