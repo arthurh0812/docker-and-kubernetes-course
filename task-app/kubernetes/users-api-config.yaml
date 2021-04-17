@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: security-config
+  namespace: default
+  labels:
+    name: security-config
+data:
+  AUTH_SERVER_ADDRESS: localhost
