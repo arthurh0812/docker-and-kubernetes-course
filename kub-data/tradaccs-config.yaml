@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tradaccs-config
+  namespace: default
+  labels:
+    name: tradaccs-config
+data:
+  PORT: '8080'
