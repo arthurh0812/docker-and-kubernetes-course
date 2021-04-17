@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: security-config
+  name: users-api-config
   namespace: default
   labels:
-    name: security-config
+    name: users-api-config
 data:
-  AUTH_SERVER_ADDRESS: localhost
+  AUTH_SERVER_ADDRESS: 'localhost:80'
