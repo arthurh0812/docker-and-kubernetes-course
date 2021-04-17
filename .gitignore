@@ -20,3 +20,10 @@ node_modules/
 
 # Images, PDFs etc.
 *.pdf
+*.png
+*.jpg
+*.jpeg
+
+# YAML-encoded/JSON-encoded secrets
+*secret.yaml
+*secret.json
