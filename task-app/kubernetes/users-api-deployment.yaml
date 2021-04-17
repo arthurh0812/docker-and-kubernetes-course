@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: users-api-deployment
+  namespace: default
+  labels:
+    name: users-api-deployment
+spec:
+  selector:
+    matchLabels:
+      app: users-api
+  replicas: 1
+  template:
+    metadata:
+      name: users-pod
+      namespace: default
+      labels:
+        name: users-pod
+        app: users-api
+    spec:
+      containers:
+        - name: users-api-container
+          image: gcr.io/tradaccs/users-api:v2
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: users-api-config
+
+        - name: auth-api-container
+          image: gcr.io/tradaccs/auth-api:v1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
