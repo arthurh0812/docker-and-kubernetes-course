@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const axios = require('axios');
 
-const authServerAddress = process.env.AUTH_SERVER_ADDRESS
+const authServerAddress = process.env.AUTH_API_SERVICE_HOST
 
 const app = express();
 
