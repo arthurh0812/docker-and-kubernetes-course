@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tasks-api-config
+  namespace: default
+  labels:
+    name: tasks-api-config
+data:
+  AUTH_API_SERVICE_HOST: 'auth-api.default'
+  TASKS_FOLDER: 'tasks'
