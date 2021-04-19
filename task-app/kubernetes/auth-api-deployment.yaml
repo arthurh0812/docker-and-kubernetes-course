@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-api-deployment
+  namespace: default
+  labels:
+    name: auth-api-deployment
+spec:
+  selector:
+    matchLabels:
+      app: auth-api
+  template:
+    metadata:
+      name: auth-api-pod
+      namespace: default
+      labels:
+        name: auth-api-pod
+        app: auth-api
+    spec:
+      containers:
+        - name: auth-api-container
+          image: gcr.io/tradaccs/auth-api:v1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
