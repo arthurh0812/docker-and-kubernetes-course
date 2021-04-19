@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: auth-api-deployment
+  name: auth-api
   namespace: default
   labels:
-    name: auth-api-deployment
+    name: auth-api
 spec:
   selector:
     matchLabels:
