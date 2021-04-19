@@ -6,4 +6,4 @@ metadata:
   labels:
     name: users-api-config
 data:
-  AUTH_SERVER_ADDRESS: 'localhost:80'
+  AUTH_API_SERVICE_HOST: 'auth-api.default'
