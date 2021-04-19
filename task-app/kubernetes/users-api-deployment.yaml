@@ -12,10 +12,10 @@ spec:
   replicas: 1
   template:
     metadata:
-      name: users-pod
+      name: users-api-pod
       namespace: default
       labels:
-        name: users-pod
+        name: users-api-pod
         app: users-api
     spec:
       containers:
@@ -27,9 +27,3 @@ spec:
           envFrom:
             - configMapRef:
                 name: users-api-config
-
-        - name: auth-api-container
-          image: gcr.io/tradaccs/auth-api:v1
-          imagePullPolicy: Always
-          ports:
-            - containerPort: 80
