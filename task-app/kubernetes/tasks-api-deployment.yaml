@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tasks-api
+  namespace: default
+  labels:
+    name: tasks-api
+spec:
+  selector:
+    matchLabels:
+      app: tasks-api
+  template:
+    metadata:
+      name: tasks-api-pod
+      namespace: default
+      labels:
+        name: tasks-api-pod
+        app: tasks-api
+    spec:
+      containers:
+        - name: tasks-api
+          image: gcr.io/tradaccs/tasks-api:v1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: tasks-api-config
+                optional: false
