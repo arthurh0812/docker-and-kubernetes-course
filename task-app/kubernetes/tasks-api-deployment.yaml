@@ -22,7 +22,7 @@ spec:
           image: gcr.io/tradaccs/tasks-api:v1
           imagePullPolicy: Always
           ports:
-            - containerPort: 8080
+            - containerPort: 8000
           envFrom:
             - configMapRef:
                 name: tasks-api-config
