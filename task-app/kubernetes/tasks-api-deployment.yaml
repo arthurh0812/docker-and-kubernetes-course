@@ -27,3 +27,11 @@ spec:
             - configMapRef:
                 name: tasks-api-config
                 optional: false
+          volumeMounts:
+            - name: task-volume
+              mountPath: /app/tasks
+      volumes:
+        - name: task-volume
+          persistentVolumeClaim:
+            claimName: tasks-volume-claim
+            readOnly: false
