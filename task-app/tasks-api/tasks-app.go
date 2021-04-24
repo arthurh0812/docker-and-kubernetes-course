@@ -59,7 +59,7 @@ func main() {
 		}
 		logger.Logf(golog.InfoLevel, "tasksFilePath bytes: %v\n", bs)
 		tasks := bytes.Split(bs, []byte(tasksSep))
-		if len(tasks) > 1 {
+		if len(tasks) > 0 {
 			tasks = tasks[:len(tasks)-1]
 		}
 		logger.Logf(golog.InfoLevel, "tasks: %#v\n", tasks)
@@ -76,8 +76,7 @@ func main() {
 		}
 		logger.Logf(golog.InfoLevel, "goTasks: %#v", goTasks)
 
-		ctx.StatusCode(http.StatusOK)
-		ctx.JSON(&APIResponse{
+		ctx.StopWithJSON(http.StatusOK, APIResponse{
 			Message: "Tasks loaded.",
 			Status: http.StatusOK,
 			Count: int64(len(goTasks)),
@@ -111,8 +110,7 @@ func main() {
 			ctx.StopWithError(500, err)
 			return
 		}
-		ctx.StatusCode(http.StatusCreated)
-		ctx.JSON(&APIResponse{
+		ctx.StopWithJSON(http.StatusCreated, APIResponse{
 			Message: "Task stored.",
 			Status: http.StatusCreated,
 			Count: 1,
@@ -122,7 +120,7 @@ func main() {
 		})
 	})
 
-	err := app.Listen(":8000")
+	err := app.Run(iris.Addr(":8000"))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -141,16 +139,20 @@ func extractAndVerifyToken(header http.Header) (string, error) {
 	} else {
 		token = parts[1]
 	}
+	log.Printf("URL: http://%s/verify-token/%s\n", authAPIService, token)
 	res, err := http.Get(fmt.Sprintf("http://%s/verify-token/%s", authAPIService, token))
 	if err != nil {
-		return "", fmt.Errorf("request to authorization service failed")
+		return "", fmt.Errorf("request to authorization service failed: %v", err)
 	}
 	dec := json.NewDecoder(res.Body)
-	_ = res.Body.Close()
-	a := APIResponse{}
-	err = dec.Decode(&a)
+	defer res.Body.Close()
+	apiRes := APIResponse{}
+	err = dec.Decode(&apiRes)
 	if err != nil {
-		return "", fmt.Errorf("failed to decode JSON API response from the authorization service")
+		return "", fmt.Errorf("failed to decode JSON API response from the authorization service: %v", err)
 	}
-	return a.Data["uid"].(string), nil
+	if apiRes.Status % 100 > 2 {
+		return "", fmt.Errorf("request to authorization service returned error: %s", apiRes.Message)
+	}
+	return apiRes.Data["uid"].(string), nil
 }
